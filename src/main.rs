@@ -1,9 +1,13 @@
-use genasaynciter::sync::IntoStream;
+use std::fmt::Display;
 
-pub fn print_all(i: IntoStream) {
-    let i = i.into_stream();
+use gensynciter::{IntoStream, Stream};
+
+pub fn print_all<T: Display>(i: impl IntoStream<Item = T>) {
+    i.into_stream().for_each(|i| {
+        println!("{i}");
+    });
 }
 
 fn main() {
-    println!("Hello, world!");
+    print_all(gensynciter::gen_range(0, 5));
 }
